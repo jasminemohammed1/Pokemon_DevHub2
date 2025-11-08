@@ -1,0 +1,129 @@
+class Pokemon {
+  int? id;
+  String? num;
+  String? name;
+  String? img;
+  List<String>? type;
+  String? height;
+  String? weight;
+  String? candy;
+  int? candyCount;
+  String? egg;
+  String? spawnChance;
+  String? avgSpawns;
+  String? spawnTime;
+  List<double>? multipliers;
+  List<String>? weaknesses;
+  List<NextEvolution>? nextEvolution;
+
+  Pokemon.fromJson(Map<String, dynamic> json) {
+    //{"":
+    // }
+    id = json['id'];
+    num = json['num'];
+    name = json['name'];
+    img = json['img'];
+    type = json['type']?.cast<String>();
+    height = json['height'];
+    weight = json['weight'];
+    candy = json['candy'];
+    candyCount = json['candy_count'];
+    egg = json['egg'];
+    spawnChance = json['spawn_chance'].toString();
+    avgSpawns = json['avg_spawns'].toString();
+    spawnTime = json['spawn_time'];
+    multipliers = json['multipliers']?.cast<double>();
+    weaknesses = json['weaknesses']?.cast<String>();
+    if (json['next_evolution'] != null) {
+      nextEvolution = [];
+      json['next_evolution'].forEach((v) {
+        nextEvolution!.add(NextEvolution.fromJson(v));
+      });
+    }
+  }
+
+  Map<String,dynamic> tojson(){
+    Map<String,dynamic>data=new Map<String,dynamic>();
+    data['name']=this.name;
+    data['id']=this.id;
+    data['num']=this.num;
+    data['img']=this.img;
+    data['type']=this.type;
+    data['height']=this.height;
+    data['weight']=this.weight;
+    data['candy']=this.candy;
+    data['candy_count']=this.candyCount;
+    data['egg']=this.egg;
+    data['spawn_chance']=this.spawnChance;
+    data['avg_spawns']=this.avgSpawns;
+    data['multipliers']=this.multipliers;
+    data['weaknesses']=this.weaknesses;
+    if (this.nextEvolution!=null)
+    {
+      data['next_evolution']=this.nextEvolution!.map((v) => v.toJson()).toList();
+    }
+
+
+
+    return data;
+  }
+
+
+
+
+}
+
+class NextEvolution
+{
+  String ?num;
+  String ?name;
+
+  NextEvolution({
+    required this.num,
+    required this.name
+  });
+
+
+  NextEvolution.fromJson(Map<String,dynamic> json)
+  {
+    num=json['num'];
+    name=json['name'];
+  }
+
+  Map<String,dynamic> toJson()
+  {
+    Map<String,dynamic>data=new Map<String,dynamic>();
+    data['num']=this.num;
+    data['name']=this.name;
+    return data;
+  }
+}
+
+class PokemonClub{
+  List<Pokemon>pokemon=[];
+
+  PokemonClub({required this.pokemon});
+
+  PokemonClub.fromJson(Map<String, dynamic> json) {
+    pokemon = [];
+    if (json['pokemon'] != null) {
+      json['pokemon'].forEach((v) {
+        pokemon.add(Pokemon.fromJson(v));
+      });
+    }
+  }
+
+  Map<String,dynamic> tojson()
+  {
+    Map<String,dynamic> data= new Map<String,dynamic>();
+    if(this.pokemon !=null)
+    {
+      data['pokemon']=(this.pokemon.map((v){
+        v.tojson();
+      }).toList());
+    }
+
+    return data;
+  }
+
+}
